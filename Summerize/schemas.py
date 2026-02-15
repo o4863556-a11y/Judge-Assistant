@@ -119,3 +119,49 @@ class RoleAggregation(BaseModel):
 class Node3Output(BaseModel):
     """Full output of Node 3: per-role aggregations."""
     role_aggregations: List[RoleAggregation]
+
+
+# --- Node 4A Output Schemas ---
+
+class ThemeCluster(BaseModel):
+    """One thematic group within a legal role."""
+    theme_name: str = Field(description="Descriptive theme name in Arabic")
+    agreed: List[AgreedBullet] = Field(default_factory=list)
+    disputed: List[DisputedPoint] = Field(default_factory=list)
+    party_specific: List[PartyBullet] = Field(default_factory=list)
+    bullet_count: int = Field(description="Total items in this theme cluster")
+
+
+class ThemedRole(BaseModel):
+    """A legal role with its items organized into thematic clusters."""
+    role: LegalRoleEnum = Field(description="The legal role")
+    themes: List[ThemeCluster] = Field(description="3-7 thematic clusters")
+
+
+class Node4AOutput(BaseModel):
+    """Full output of Node 4A."""
+    themed_roles: List[ThemedRole]
+
+
+# --- Node 4B Output Schemas ---
+
+class ThemeSummary(BaseModel):
+    """Synthesized summary for one theme within a role."""
+    theme: str = Field(description="Theme name from clustering")
+    summary: str = Field(description="2-3 paragraphs in formal legal Arabic")
+    key_disputes: List[str] = Field(
+        default_factory=list,
+        description="Brief labels for main disputes in this theme"
+    )
+    sources: List[str] = Field(description="All citations referenced in the summary")
+
+
+class RoleThemeSummaries(BaseModel):
+    """All theme summaries for one legal role."""
+    role: LegalRoleEnum
+    theme_summaries: List[ThemeSummary]
+
+
+class Node4BOutput(BaseModel):
+    """Full output of Node 4B."""
+    role_theme_summaries: List[RoleThemeSummaries]
