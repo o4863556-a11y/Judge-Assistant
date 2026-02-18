@@ -3,6 +3,10 @@ import uuid
 from typing import List, Dict, Any, Optional
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
+import sys
+import os
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from schemas import DocumentMetadata, NormalizedChunk, DocTypeEnum, PartyEnum
 
 # --- Configuration ---
@@ -116,7 +120,7 @@ class Node0_DocumentIntake:
                 char_count = 0
             
             chunk = NormalizedChunk(
-                chunk_id=str(uuid.uuid4()),
+                chunk_id=str(uuid.uuid5(uuid.NAMESPACE_DNS, f"{doc_id}_{idx + 1}")),
                 doc_id=doc_id,
                 page_number=current_page, # Or extracted from explicit markers if available
                 paragraph_number=idx + 1,

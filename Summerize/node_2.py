@@ -157,7 +157,7 @@ class Node2_BulletExtractor:
                     "bullet": clean_text,
                     "source": [self.build_citation(chunk)],
                     "party": chunk.get('party', 'غير محدد'),
-                    "chunk_id": chunk['chunk_id']
+                    "chunk_id": chunk.get('chunk_id', '')
                 })
 
         return results
