@@ -4,6 +4,7 @@ from typing import List, Dict, Any, Tuple
 from collections import defaultdict
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
+import uuid
 
 # Add parent directory to path for shared schema imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
@@ -113,7 +114,7 @@ class Node4A_ThematicClustering:
 
         # Agreed items
         for i, item in enumerate(role_agg.get("agreed", []), 1):
-            temp_id = f"agreed-{i:03d}"
+            temp_id = f"agreed-{i:03d}-{uuid.uuid4().hex[:8]}"
             id_lookup[temp_id] = {"type": "agreed", "data": item}
             sources_str = ", ".join(item.get("sources", []))
             text = f"[{temp_id}] [متفق عليه] {item.get('text', '')} [المصادر: {sources_str}]"
@@ -121,7 +122,7 @@ class Node4A_ThematicClustering:
 
         # Disputed items
         for i, item in enumerate(role_agg.get("disputed", []), 1):
-            temp_id = f"disputed-{i:03d}"
+            temp_id = f"disputed-{i:03d}-{uuid.uuid4().hex[:8]}"
             id_lookup[temp_id] = {"type": "disputed", "data": item}
             # Format disputed item with subject and position summaries
             positions_text = []
@@ -136,7 +137,7 @@ class Node4A_ThematicClustering:
 
         # Party-specific items
         for i, item in enumerate(role_agg.get("party_specific", []), 1):
-            temp_id = f"party-{i:03d}"
+            temp_id = f"party-{i:03d}-{uuid.uuid4().hex[:8]}"
             id_lookup[temp_id] = {"type": "party_specific", "data": item}
             sources_str = ", ".join(item.get("sources", []))
             text = f"[{temp_id}] [{item.get('party', '')}] {item.get('text', '')} [المصادر: {sources_str}]"
