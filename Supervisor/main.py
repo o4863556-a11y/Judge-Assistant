@@ -63,8 +63,8 @@ def _default_state(
 def run_single_query(
     query: str,
     case_id: str = "",
-    uploaded_files: List[str] | None = None,
-    conversation_history: List[dict] | None = None,
+    uploaded_files: Optional[List[str]] = None,
+    conversation_history: Optional[List[dict]] = None,
     turn_count: int = 0,
 ) -> dict:
     """Run a single query through the supervisor and return the final state."""
